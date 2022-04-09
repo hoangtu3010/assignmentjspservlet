@@ -39,7 +39,7 @@
     </div>
         <% } %>
     <div class="form-section">
-        <form action="<%= obj.getId() == 0 ? "/admin/products/create" : "/admin/products/update" %>" method="post">
+        <form action="<%= obj.getId() == 0 ? "/admin/products/create" : "/admin/products/update" %>" method="post" name="create-form">
             <div class="mb-3">
                 <label class="form-label">Name</label>
                 <input type="hidden" name="id" value="<%= obj.getId() %>">
@@ -54,7 +54,9 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Thumbnail</label>
-                <input type="text" name="thumbnail" class="form-control"
+                <p><img class="image-preview" id="image_preview" src="<%= obj.getThumbnail() != null ? obj.getThumbnail() : "" %>" alt=""></p>
+                <button type="button" id="upload_widget" class="btn btn-custom"><i class="bi bi-cloud-upload"></i> Upload files</button>
+                <input type="hidden" name="thumbnail" class="form-control"
                        value="<%= obj.getThumbnail() != null ? obj.getThumbnail() : "" %>">
                 <% if (errors.containsKey("thumbnail")) { %>
                 <p class="text-danger mt-2"><%=errors.get("thumbnail")%>
@@ -120,3 +122,35 @@
     </div>
 </body>
 </html>
+
+<style>
+    .image-preview{
+        width: 200px;
+        border-radius: 20px;
+    }
+
+    .hide{
+        display: none;
+    }
+</style>
+
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    let myWidget = cloudinary.createUploadWidget({
+            cloudName: 'dptacqyq3',
+            uploadPreset: 'dTeUva'}, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console .log('Done! Here is the image info: ', result.info.url);
+                let img = document.getElementById("image_preview");
+                img.classList.remove("hide");
+                img.src = result.info.url;
+                document.forms['create-form']['thumbnail'].value = result.info.url;
+            }
+        }
+    )
+
+    document.getElementById("upload_widget").addEventListener("click", function(){
+        myWidget.open();
+    }, false);
+</script>

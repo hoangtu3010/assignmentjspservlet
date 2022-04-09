@@ -1,5 +1,11 @@
 <%@ page import="com.example.assignmentjspservlet.entity.Product" %>
 <%@ page import="java.util.List" %>
+
+<%
+    int currentPage = (Integer) request.getAttribute("currentPage");
+    int noOfPages = (Integer) request.getAttribute("noOfPages");
+%>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,6 +20,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/table-custom.css">
+    <link rel="stylesheet" href="/css/pagination-style.css">
     <title>List Products</title>
 </head>
 <body>
@@ -60,6 +67,15 @@
             }
         %>
     </ul>
+    <div class="pagination-section">
+        <a href="/admin/products/list?page=<%= currentPage - 1 %>" class="<%=currentPage == 1 ? "non-active" : ""%>">Previous</a>
+
+        <% for (int i = 0; i < noOfPages; i++) { %>
+        <a class="<%=currentPage == i + 1 ? "active" : ""%>" href="/admin/products/list?page=<%= i + 1 %>"><%=i + 1%></a>
+        <% } %>
+
+        <a href="/admin/products/list?page=<%= currentPage + 1 %>" class="<%=currentPage == noOfPages ? "non-active" : ""%>">Next</a>
+    </div>
 </div>
 </body>
 </html>

@@ -20,6 +20,8 @@ public class GenericModel<T> {
 
     private static Connection connection;
 
+    private int noOfRecords;
+
     static {
         try {
             connection = ConnectionHelper.getConnection();
@@ -74,7 +76,7 @@ public class GenericModel<T> {
                 fieldsStringBuilder.append(SQLConfig.COMMA);
 
                 f.setAccessible(true);
-                if (column.type().contains("VARCHAR") || column.type().contains("TEXT")) {
+                if (column.type().contains("VARCHAR") || column.type().contains("TEXT") || column.type().contains("CHAR")) {
                     fieldsValueBuilder.append(SQLConfig.PARENTHESIS);
                     fieldsValueBuilder.append(f.get(obj));
                     fieldsValueBuilder.append(SQLConfig.PARENTHESIS);
@@ -148,6 +150,54 @@ public class GenericModel<T> {
                 }
                 loadResultSetIntoObject(resultSet, obj);
                 list.add(obj);
+            }
+        } catch (SQLException | IllegalAccessException e) {
+            throw new RuntimeException("Unable to get the records: " + e.getMessage(), e);
+        }
+
+        return list;
+    }
+
+    public List<T> getPage(int offset, int noOfRecords) {
+        List<T> list = new ArrayList<>();
+
+        StringBuilder sqlStringBuilder = new StringBuilder();
+        sqlStringBuilder.append(SQLConfig.SELECT);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(SQLConfig.SQL_CALC_FOUND_ROWS);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(SQLConfig.STAR);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(SQLConfig.FROM);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(tableName);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(SQLConfig.LIMIT);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(offset);
+        sqlStringBuilder.append(SQLConfig.COMMA);
+        sqlStringBuilder.append(SQLConfig.SPACE);
+        sqlStringBuilder.append(noOfRecords);
+
+        System.out.println(sqlStringBuilder);
+
+        try {
+            Statement stt = connection.createStatement();
+            ResultSet resultSet = stt.executeQuery(sqlStringBuilder.toString());
+            while (resultSet.next()) {
+                T obj = null;
+                try {
+                    obj = (T) clazz.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                loadResultSetIntoObject(resultSet, obj);
+                list.add(obj);
+            }
+            resultSet.close();
+            resultSet = stt.executeQuery(SQLConfig.SELECT + SQLConfig.SPACE + SQLConfig.FOUND_ROWS);
+            if (resultSet.next()){
+                this.noOfRecords = resultSet.getInt(1);
             }
         } catch (SQLException | IllegalAccessException e) {
             throw new RuntimeException("Unable to get the records: " + e.getMessage(), e);
@@ -245,6 +295,53 @@ public class GenericModel<T> {
     }
 
     /**
+     * Phương thức này trả về một đối tượng từ database.
+     *
+     * @param userName là tên tài khoản của đối tượng cần tìm.
+     * @return một đối tượng.
+     * @author dTeUv
+     */
+    public T findByUserName(String userName) {
+        T obj = null;
+
+        String sqlStringBuilder = SQLConfig.SELECT +
+                SQLConfig.SPACE +
+                SQLConfig.STAR +
+                SQLConfig.SPACE +
+                SQLConfig.FROM +
+                SQLConfig.SPACE +
+                tableName +
+                SQLConfig.SPACE +
+                SQLConfig.WHERE +
+                SQLConfig.SPACE +
+                "userName" +
+                SQLConfig.EQUAL_SIGN +
+                SQLConfig.PARENTHESIS +
+                userName +
+                SQLConfig.PARENTHESIS;
+        System.out.println(sqlStringBuilder);
+
+        try {
+            Statement stt = connection.createStatement();
+            ResultSet resultSet = stt.executeQuery(sqlStringBuilder);
+            if (resultSet.next()) {
+                try {
+                    obj = (T) clazz.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+                loadResultSetIntoObject(resultSet, obj);
+                return obj;
+            }
+            System.out.println("Action success");
+        } catch (SQLException | IllegalAccessException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return obj;
+    }
+
+    /**
      * Phương thức này cập nhật thông tin một đối tượng trong database.
      *
      * @param id là id của đối tượng cần cập nhật.
@@ -274,7 +371,7 @@ public class GenericModel<T> {
                 sqlStringBuilder.append(column.name());
                 sqlStringBuilder.append(SQLConfig.EQUAL_SIGN);
                 field.setAccessible(true);
-                if (column.type().contains("VARCHAR") || column.type().contains("TEXT")) {
+                if (column.type().contains("VARCHAR") || column.type().contains("TEXT") || column.type().contains("CHAR")) {
                     sqlStringBuilder.append(SQLConfig.PARENTHESIS);
                     sqlStringBuilder.append(field.get(obj));
                     sqlStringBuilder.append(SQLConfig.PARENTHESIS);
@@ -340,5 +437,9 @@ public class GenericModel<T> {
         }
 
         return false;
+    }
+
+    public int getNoOfRecords() {
+        return noOfRecords;
     }
 }

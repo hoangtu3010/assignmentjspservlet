@@ -8,9 +8,12 @@ public class SQLConfig {
     public static final String REFERENCES = "REFERENCES";
     public static final String AUTO_INCREMENT = "AUTO_INCREMENT";
     public static final String SELECT = "SELECT";
+    public static final String LIMIT = "LIMIT";
     public static final String STAR = "*";
     public static final String COUNT = "COUNT";
     public static final String INFORMATION_SCHEMA = "information_schema.TABLES";
+    public static final String SQL_CALC_FOUND_ROWS = "SQL_CALC_FOUND_ROWS";
+    public static final String FOUND_ROWS = "FOUND_ROWS()";
     public static final String TABLE_SCHEMA = "TABLE_SCHEMA";
     public static final String TABLE_NAME  = "TABLE_NAME";
     public static final String FROM = "FROM";

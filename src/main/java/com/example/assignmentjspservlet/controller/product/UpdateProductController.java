@@ -33,6 +33,7 @@ public class UpdateProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
         GenericModel<Product> modelProduct = new GenericModel<>(Product.class);
         Date date = new Date();
         Timestamp currentTime = new Timestamp(date.getTime());

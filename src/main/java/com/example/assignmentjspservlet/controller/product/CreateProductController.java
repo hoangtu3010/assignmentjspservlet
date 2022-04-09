@@ -20,7 +20,7 @@ public class CreateProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Date date = new Date();
         Timestamp currentTime = new Timestamp(date.getTime());
-        obj = new Product(0,"", "", "", 0, 1, currentTime, currentTime, 0);
+        obj = new Product(0,"", "https://res.cloudinary.com/dptacqyq3/image/upload/v1649398993/rephakqfokzb0cvj3dhk.png", "", 0, 1, currentTime, currentTime, 0);
         GenericModel<Category> model = new GenericModel<>(Category.class);
         List<Category> listCategories = model.getAll();
 
@@ -31,6 +31,7 @@ public class CreateProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         obj.setName(req.getParameter("name"));
         obj.setThumbnail(req.getParameter("thumbnail"));
         obj.setDescription(req.getParameter("description"));
