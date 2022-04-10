@@ -10,26 +10,36 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/form-authen.css">
     <title>Register</title>
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center">Register</h2>
-    <form action="/accounts/register" method="post">
-        <div class="mb-3">
-            <label class="form-label">Full name</label>
-            <input type="text" name="fullName" class="form-control">
+    <h2 class="text-center mt-5">Register</h2>
+    <div class="d-flex justify-content-center p-5">
+        <div class="form-authentication-section">
+            <a href="/" class="btn-back"><i class="bi bi-arrow-left"></i> Home</a>
+            <form class="mt-4" action="/accounts/register" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Full name</label>
+                    <input type="text" name="fullName" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">User name</label>
+                    <input type="text" name="userName" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-auth-custom">Register</button>
+                </div>
+            </form>
+            <p class="text-center m-3">I already have an account!!! <a href="/accounts/login">Sign in</a></p>
         </div>
-        <div class="mb-3">
-            <label class="form-label">User name</label>
-            <input type="text" name="userName" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+    </div>
 </div>
 </body>
 </html>

@@ -22,7 +22,7 @@
     </div>
     <div class="header-menu d-flex">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="products">Products</a>
@@ -59,9 +59,3 @@
         <% } %>
     </div>
 </ul>
-
-<style>
-    .logo-img {
-        width: 80px;
-    }
-</style>

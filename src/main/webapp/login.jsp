@@ -10,22 +10,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/form-authen.css">
     <title>Login</title>
 </head>
 <body>
-<div class="container">
-    <h2 class="text-center">Login</h2>
-    <form action="/accounts/login" method="post">
-        <div class="mb-3">
-            <label class="form-label">User name</label>
-            <input type="text" name="userName" class="form-control">
+    <div class="container">
+        <h2 class="text-center mt-5">Login</h2>
+        <div class="d-flex justify-content-center p-5">
+            <div class="form-authentication-section">
+                <a href="/" class="btn-back"><i class="bi bi-arrow-left"></i> Home</a>
+                <form class="mt-4" action="/accounts/login" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">User name</label>
+                        <input type="text" name="userName" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-auth-custom">Login</button>
+                    </div>
+                </form>
+                <p class="text-center mt-3">Do you already have an account? <a href="/accounts/register">Sign Up</a></p>
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-</div>
+    </div>
 </body>
 </html>
